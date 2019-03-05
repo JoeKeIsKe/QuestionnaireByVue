@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Questionnaire</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container" id="app">
+	<div class="subjects-panel">
+		<div v-show="current_page === 1">
+			<radio-component @setbtndisabled="setDisabled" :current_page="current_page"></radio-component>
+		</div>
+		<div v-show="current_page === 2">
+			<checkbox-component @setbtndisabled="setDisabled" :current_page="current_page"></checkbox-component>
+		</div>
+		<div v-show="current_page === 3">
+			<textarea-component @setbtndisabled="setDisabled" :current_page="current_page"></textarea-component>
+		</div>
+	</div>
+	<div class="button-panel">
+<button-component :value="current_page" @func="updatePage" :disabled="disabled"></button-component>
+</div>
+
+</div>
+
+
+
+<template id="button-component">
+	<div class="row">
+	<button v-if="current_page === 3"
+	         @click="submitForm"
+	         :class="btnClass"
+	         :disabled="disabled">提交</button>  
+	<button v-if="current_page < 3" 
+	        @click="nextPage"
+	        :class="btnClass"
+	        :disabled="disabled">下一步</button>
+	<button v-if="current_page > 1"
+	        @click="previousPage"
+	        :class="btnClass">上一步</button>     
+	<button @click="resetPage" :class="btnClass">重置</button>	
+
+	</div>
+
+</template>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src='questions.js'></script>
+<script src='button-component.js'></script>
+<script>
+
+var bus = new Vue();
+
+var vm = new Vue({
+el:'#app',
+data:{
+    current_page: 1,
+    disabled: true,
+    disabledClass:"disabledClass"
+
+},
+methods:{
+	updatePage(val){
+	 this.current_page = val;
+	},
+
+	setDisabled:function(results, size){
+		var status = false;
+       if(results.length < size){
+          status = true;
+       }
+       this.disabled = status;
+	}
+}
+
+
+});	
+
+</script>
+</body>
+</html>
