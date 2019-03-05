@@ -27,10 +27,11 @@ html, body{
 }
 
 button{
-	width: 20%;
+	display: block;
+	width: 22%;
 	margin: auto 5%;
 	padding: 5%;
-	height: 50%;
+	text-align: center;
 }
 
 .two-button{
